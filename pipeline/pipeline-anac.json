@@ -1,0 +1,55 @@
+{
+	"name": "pipeline-anac",
+	"properties": {
+		"activities": [
+			{
+				"name": "Bronze to Silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/work.gharantes@gmail.com/pipeline-anac-azure-databricks/Production/Pipeline 1 - Bronze to Silver"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricksConnection",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Silver to Gold",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Bronze to Silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/work.gharantes@gmail.com/pipeline-anac-azure-databricks/Production/Pipeline 2 - Silver to Gold"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricksConnection",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
